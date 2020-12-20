@@ -1,0 +1,25 @@
+.movie-info{
+    text-align: center;
+    margin-top: 20px;
+}
+.attention-info{
+    text-align: center;
+    margin-top: 20px;
+}
+.movie-list{
+    padding-left: 0;
+}
+.movie-list li{
+    list-style: none;
+    border-bottom: 1px solid #eee;
+}
+.avatar{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.movie-content{
+    text-align: left;
+    margin-left: 60px;
+}

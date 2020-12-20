@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% block title %}详情-{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/detail.css') }}">
+{% endblock %}
+{% block main %}
+    {% if trailer %}
+        <h3 class="page-title">{{ trailer.title }}</h3>
+        <p align="left" class="movie-info">
+        </p>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="{{ url_for('movie_info.detail', movie_id=movie.id) }}">预告片资讯</a></li>
+                <li><a href="{{ url_for('movie_info.movie_detail', movie_id=movie.id) }}">影片介绍</a></li>
+                <li><a href="{{ url_for('movie_info.movie_income', movie_id=movie.id) }}">票房评分</a></li>
+                <li><a href="{{ url_for('movie_info.movie_AI', movie_id=movie.id) }}">智能分析</a></li>
+                <li><a href="{{ url_for('movie_info.movie_other', movie_id=movie.id) }}">其他信息</a></li>
+            </ul>
+            <form class="navbar-form navbar-left" action="{{ url_for('movie.search') }}" method="post">
+                <button type="submit" class="btn btn-default"><a href={{movie.Movie_Title_link}}>观看正片</a></button>
+            </form>
+          </div>
+        <hr/>
+
+
+        <p class="movie-info">用户行为分析</p>
+        <br>
+        <p class="movie-content">预告片观看数：{{ trailer.viewCount }}</p>
+        <p class="movie-content">预告片like数：{{ trailer.likeCount }}</p>
+        <p class="movie-content">预告片dislike数：{{ trailer.dislikeCount }}</p>
+        <p class="movie-content">预告片favorite数：{{ trailer.favoriteCount }}</p>
+        <p class="movie-content">预告片评论数：{{ trailer.commentCount }}</p>
+        <hr/>
+
+        <button type="submit" class="btn btn-default"><a href= "{{ url_for('movie_info.movie_AI', movie_id=movie.id) }}">偏好分析</a></button>
+        <button type="submit" class="btn btn-default"><a href= "{{ url_for('movie_info.movie_AI_view', movie_id=movie.id) }}">点击量分析</a></button>
+        <button type="submit" class="btn btn-default"><a href= "{{ url_for('movie_info.movie_AI_predict', movie_id=movie.id) }}">评分预测</a></button>
+        <button type="submit" class="btn btn-default"><a href= "{{ url_for('movie_info.movie_AI_recommand', movie_id=movie.id, Movie_genre=movie.Movie_genre) }}">同类电影推荐</a></button>
+        <p class="movie-info">评分预测结果</p>
+        <p class="movie-content">预测评分：{{ movie.predicted_rating }}</p>
+        <p class="movie-content">电影价值排名：{{ movie.predicted_ranking }}</p>
+        <meta charset="utf-8"><link rel="icon" href="https://jscdn.com.cn/highcharts/images/favicon.ico">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            /* css 代码  */
+        </style>
+        <script src="https://code.highcharts.com.cn/highcharts/highcharts.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/highcharts-more.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/modules/solid-gauge.js"></script>
+        <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+        <div style="width: 600px; height: 200px; margin: 0 auto">
+            <div id="container-speed" style="width: 300px; height: 200px; float: left"></div>
+            <div id="container-rpm" style="width: 300px; height: 200px; float: left"></div>
+        </div>
+        <script>
+            // JS 代码
+            // 公共配置
+            Highcharts.setOptions({
+                chart: {
+                    type: 'solidgauge'
+                },
+                title: null,
+                pane: {
+                    center: ['50%', '85%'],
+                    size: '140%',
+                    startAngle: -90,
+                    endAngle: 90,
+                    background: {
+                        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+                        innerRadius: '60%',
+                        outerRadius: '100%',
+                        shape: 'arc'
+                    }
+                },
+                tooltip: {
+                    enabled: false
+                },
+                yAxis: {
+                    stops: [
+                        [0.1, '#55BF3B'], // green
+                        [0.5, '#DDDF0D'], // yellow
+                        [0.9, '#DF5353'] // red
+                    ],
+                    lineWidth: 0,
+                    minorTickInterval: null,
+                    tickPixelInterval: 400,
+                    tickWidth: 0,
+                    title: {
+                        y: -70
+                    },
+                    labels: {
+                        y: 16
+                    }
+                },
+                plotOptions: {
+                    solidgauge: {
+                        dataLabels: {
+                            y: 5,
+                            borderWidth: 0,
+                            useHTML: true
+                        }
+                    }
+                }
+            });
+            // 速度仪表
+            var chart1 = Highcharts.chart('container-speed', {
+                yAxis: {
+                    min: 0,
+                    max: 10,
+                    title: {
+                        text: '预测评分'
+                    }
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [{
+                    name: '预测评分',
+                    data: [parseFloat('{{movie.predicted_rating|safe }}')],
+                    dataLabels: {
+                        format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                        ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
+                        '<span style="font-size:12px;color:silver">/10</span></div>'
+                    },
+                    tooltip: {
+                        valueSuffix: ''
+                    }
+                }]
+            });
+            // 转速仪表
+            var chart2 = Highcharts.chart('container-rpm', {
+                yAxis: {
+                    min: 0,
+                    max: 225,
+                    title: {
+                        text: '预测排名'
+                    }
+                },
+                series: [{
+                    name: '预测排名',
+                    data: [parseInt('{{movie.predicted_ranking|safe }}')],
+                    dataLabels: {
+                        format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                        ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.0f}</span><br/>' +
+                        '<span style="font-size:12px;color:silver">/225部电影（所在频道）</span></div>'
+                    },
+                    tooltip: {
+                        valueSuffix: ' revolutions/min'
+                    }
+                }]
+            });
+            // 定时刷新数据
+
+
+
+        </script>
+
+    {% else %}
+        <h3 class="attention-info"> 电影走丢了！！ 404</h3>
+    {% endif %}
+
+{% endblock %}

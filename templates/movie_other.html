@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}详情-{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/detail.css') }}">
+{% endblock %}
+{% block main %}
+    {% if trailer %}
+        <h3 class="page-title">{{ trailer.title }}</h3>
+        <p align="left" class="movie-info">
+        </p>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="{{ url_for('movie_info.detail', movie_id=movie.id) }}">预告片资讯</a></li>
+                <li><a href="{{ url_for('movie_info.movie_detail', movie_id=movie.id) }}">影片介绍</a></li>
+                <li><a href="{{ url_for('movie_info.movie_income', movie_id=movie.id) }}">票房评分</a></li>
+                <li><a href="{{ url_for('movie_info.movie_AI', movie_id=movie.id) }}">智能分析</a></li>
+                <li><a href="{{ url_for('movie_info.movie_other', movie_id=movie.id) }}">其他信息</a></li>
+            </ul>
+            <form class="navbar-form navbar-left" action="{{ url_for('movie.search') }}" method="post">
+                <button type="submit" class="btn btn-default"><a href={{movie.Movie_Title_link}}>观看正片</a></button>
+            </form>
+          </div>
+
+        <p class="movie-info">其他信息</p>
+        <br>
+        <p class="movie-content">官方来源：{{ movie.Movie_Official_Sites }}</p>
+        <p class="movie-content">制片国家：{{ movie.Movie_Country }}</p>
+        <p class="movie-content">电影语言：{{ movie.Movie_Language }}</p>
+        <p class="movie-content">放映地址：{{ movie.Movie_Filming_Locations }}</p>
+        <p class="movie-content">放映时间：{{ movie.Movie_UK_Release_Time }}</p>
+
+        <p class="movie-content">制片方：{{ movie.Movie_Production_Co }}</p>
+        <p class="movie-content">Sound Mix 音效：{{ movie.Movie_Sound_Mix }}</p>
+        <p class="movie-content">电影色彩：{{ movie.Movie_Color }}</p>
+        <p class="movie-content">播放横竖比：{{ movie.Movie_Aspect_Ratio}}</p>
+        <p class="movie-content">标题：{{ movie.Movie_Headline }}</p>
+        <p class="movie-content">官方预告片时长：{{ movie.Movie_Trailer }}</p>
+        <p class="movie-content">Parent Guide：{{ movie.Movie_Parents_Guide}}</p>
+        <p class="movie-content">限制级：{{ movie.Movie_certificate }}</p>
+        <hr/>
+
+    {% else %}
+        <h3 class="attention-info"> 电影走丢了！！ 404</h3>
+    {% endif %}
+
+{% endblock %}

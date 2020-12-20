@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}-热门电影推荐系统</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static',filename='images/icons-movie.jpg') }}" type="image/x-icon"/>
+    <script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}" crossorigin="anonymous"></script>
+    <style>
+        .xue {
+            background: url({{url_for('static',filename='images/bg3.jpg') }}) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            opacity: 0.9;
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+
+<body class="xue">
+<nav class="navbar navbar-default">
+    <div class="container">
+
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="#">Mua Movie</a></li>
+                <li><a href="/">首页</a></li>
+
+            </ul>
+            <form class="navbar-form navbar-left" action="{{ url_for('movie.search') }}" method="post">
+                <div class="form-group">
+                    <input type="text" name="search_key" class="form-control" placeholder="请输入关键字"
+                           value="{{ search_key }}">
+                </div>
+                <button type="submit" class="btn btn-default">查找电影</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="main">
+    {% block main %}{% endblock %}
+</div>
+</body>
+</html>

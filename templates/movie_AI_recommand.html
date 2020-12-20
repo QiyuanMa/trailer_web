@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}详情-{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/detail.css') }}">
+{% endblock %}
+{% block main %}
+    {% if trailer %}
+        <h3 class="page-title">{{ trailer.title }}</h3>
+        <p align="left" class="movie-info">
+        </p>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="{{ url_for('movie_info.detail', movie_id=movie.id) }}">预告片资讯</a></li>
+                <li><a href="{{ url_for('movie_info.movie_detail', movie_id=movie.id) }}">影片介绍</a></li>
+                <li><a href="{{ url_for('movie_info.movie_income', movie_id=movie.id) }}">票房评分</a></li>
+                <li><a href="{{ url_for('movie_info.movie_AI', movie_id=movie.id) }}">智能分析</a></li>
+                <li><a href="{{ url_for('movie_info.movie_other', movie_id=movie.id) }}">其他信息</a></li>
+            </ul>
+            <form class="navbar-form navbar-left" action="{{ url_for('movie.search') }}" method="post">
+                <button type="submit" class="btn btn-default"><a href={{movie.Movie_Title_link}}>观看正片</a></button>
+            </form>
+          </div>
+        <hr/>
+
+
+        <p class="movie-info">用户行为分析</p>
+        <br>
+        <p class="movie-content">预告片观看数：{{ trailer.viewCount }}</p>
+        <p class="movie-content">预告片like数：{{ trailer.likeCount }}</p>
+        <p class="movie-content">预告片dislike数：{{ trailer.dislikeCount }}</p>
+        <p class="movie-content">预告片favorite数：{{ trailer.favoriteCount }}</p>
+        <p class="movie-content">预告片评论数：{{ trailer.commentCount }}</p>
+        <hr/>
+
+        <button type="submit" class="btn btn-default"><a href= "{{ url_for('movie_info.movie_AI', movie_id=movie.id) }}">偏好分析</a></button>
+        <button type="submit" class="btn btn-default"><a href= "{{ url_for('movie_info.movie_AI_view', movie_id=movie.id) }}">点击量分析</a></button>
+        <button type="submit" class="btn btn-default"><a href= "{{ url_for('movie_info.movie_AI_predict', movie_id=movie.id) }}">评分预测</a></button>
+        <button type="submit" class="btn btn-default"><a href= "{{ url_for('movie_info.movie_AI_recommand', movie_id=movie.id, Movie_genre=movie.Movie_genre) }}">同类电影推荐</a></button>
+        {% for movie in movies %}
+        <ui>
+            <div class="avatar-group">
+                <img src="{{ url_for('static',filename='images/icons-movie.jpg') }}" alt="" class="avatar">
+            </div>
+            <div class="movie-group">
+                <p class="movie-title"><a
+                        href="{{ url_for('movie_info.detail', movie_id=movie.id) }}">{{ movie.title }}</a>
+                </p>
+                <p class="movie-content">{{ movie.description }}</p>
+            </div>
+        </ui>
+    {% endfor %}
+    {% else %}
+        <h3 class="attention-info"> 电影走丢了！！ 404</h3>
+    {% endif %}
+
+{% endblock %}

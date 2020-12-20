@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}详情-{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/detail.css') }}">
+{% endblock %}
+{% block main %}
+    {% if trailer %}
+        <h3 class="page-title">{{ trailer.title }}</h3>
+        <p align="left" class="movie-info">
+        </p>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="{{ url_for('movie_info.detail', movie_id=movie.id) }}">预告片资讯</a></li>
+                <li><a href="{{ url_for('movie_info.movie_detail', movie_id=movie.id) }}">影片介绍</a></li>
+                <li><a href="{{ url_for('movie_info.movie_income', movie_id=movie.id) }}">票房评分</a></li>
+                <li><a href="{{ url_for('movie_info.movie_AI', movie_id=movie.id) }}">智能分析</a></li>
+                <li><a href="{{ url_for('movie_info.movie_other', movie_id=movie.id) }}">其他信息</a></li>
+            </ul>
+            <form class="navbar-form navbar-left" action="{{ url_for('movie.search') }}" method="post">
+                <button type="submit" class="btn btn-default"><a href={{movie.Movie_Title_link}}>观看正片</a></button>
+            </form>
+          </div>
+        <hr/>
+
+
+        <p class="movie-info">用户行为分析</p>
+        <br>
+        <p class="movie-content">预告片观看数：{{ trailer.viewCount }}</p>
+        <p class="movie-content">预告片like数：{{ trailer.likeCount }}</p>
+        <p class="movie-content">预告片dislike数：{{ trailer.dislikeCount }}</p>
+        <p class="movie-content">预告片favorite数：{{ trailer.favoriteCount }}</p>
+        <p class="movie-content">预告片评论数：{{ trailer.commentCount }}</p>
+        <hr/>
+
+        <button type="submit" class="btn btn-default"><a href= "{{ url_for('movie_info.movie_AI', movie_id=movie.id) }}">偏好分析</a></button>
+        <button type="submit" class="btn btn-default"><a href= "{{ url_for('movie_info.movie_AI_view', movie_id=movie.id) }}">点击量分析</a></button>
+        <button type="submit" class="btn btn-default"><a href= "{{ url_for('movie_info.movie_AI_predict', movie_id=movie.id) }}">评分预测</a></button>
+        <button type="submit" class="btn btn-default"><a href= "{{ url_for('movie_info.movie_AI_recommand', movie_id=movie.id, Movie_genre=movie.Movie_genre) }}">同类电影推荐</a></button>
+        <meta charset="utf-8">	<meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <link rel="icon" href="https://static.jianshukeji.com/hcode/images/favicon.ico">
+        <style>
+            /* css 代码  */
+        </style>
+        <script src="https://code.highcharts.com.cn/highcharts/highcharts.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/modules/oldie.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/modules/venn.js"></script>
+        <div id="container" style="min-width:300px;height:300px"></div>
+        <script>
+            Highcharts.chart('container', {
+            series: [{
+                type: 'venn',
+                data: [{
+                    sets: ['A'],
+                    value: parseInt('{{trailer.viewCount|safe }}'),
+                    name: '观看数',
+                    description: '显示此Youtube上电影预告片的观看数，以推测电影正式上映后的潜在客户规模'
+                }, {
+                    sets: ['B'],
+                    value: parseInt('{{trailer.commentCount|safe }}') + parseInt('{{trailer.likeCount|safe }}') + parseInt('{{trailer.dislikeCount|safe }}'),
+                    name: '评价数',
+                    description: '由点赞数+点踩数+评论数共同组成，显示Youtube上观众电影预告片的观众回应，预告片的观看评价比是电影能否成功的基础'
+                }, {
+                    sets: ['A', 'B'],
+                    value: parseInt('{{trailer.viewCount|safe }}')+parseInt('{{trailer.commentCount|safe }}')
+                }]
+            }],
+            tooltip: {
+                headerFormat:
+                '<span style="color:{point.color}">\u2022</span> ' +
+                '<span style="font-size: 14px"> {point.point.name}</span><br/>',
+                pointFormat: '{point.description}<br><span style="font-size: 10px">Source: YouTube</span>'
+            },
+            title: {
+                text: '视频点击量分析'
+            }
+        });
+        </script>
+
+
+
+
+    {% else %}
+        <h3 class="attention-info"> 电影走丢了！！ 404</h3>
+    {% endif %}
+
+{% endblock %}

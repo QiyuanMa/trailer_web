@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}详情-{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/detail.css') }}">
+{% endblock %}
+{% block main %}
+    {% if trailer %}
+        <h3 class="page-title">{{ trailer.title }}</h3>
+        <p align="left" class="movie-info">
+        </p>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="{{ url_for('movie_info.detail', movie_id=movie.id) }}">预告片资讯</a></li>
+                <li><a href="{{ url_for('movie_info.movie_detail', movie_id=movie.id) }}">影片介绍</a></li>
+                <li><a href="{{ url_for('movie_info.movie_income', movie_id=movie.id) }}">票房评分</a></li>
+                <li><a href="{{ url_for('movie_info.movie_AI', movie_id=movie.id) }}">智能分析</a></li>
+                <li><a href="{{ url_for('movie_info.movie_other', movie_id=movie.id) }}">其他信息</a></li>
+            </ul>
+            <form class="navbar-form navbar-left" action="{{ url_for('movie.search') }}" method="post">
+                <button type="submit" class="btn btn-default"><a href={{movie.Movie_Title_link}}>观看正片</a></button>
+            </form>
+          </div>
+
+        <p class="movie-info">影片介绍</p>
+        <br>
+        <p class="movie-content"><a href={{movie.Movie_Title_link}}>观看视频</a></p>
+        <p class="movie-content">简介：{{ movie.Movie_content }}</p>
+        <p class="movie-content">时长：{{ movie.Movie_runtime}}</p>
+        <p class="movie-content">类别：{{ movie.Movie_Genres }}</p>
+        <p class="movie-content">关键词：{{ movie.Movie_Plot_Keywords }}</p>
+        <p class="movie-content">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{ movie.Movie_Plot_Keywords_2 }}</p>
+        <p class="movie-content">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{ movie.Movie_Plot_Keywords_3 }}</p>
+        <p class="movie-content">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{ movie.Movie_Plot_Keywords_4 }}</p>
+        <p class="movie-content">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{ movie.Movie_Plot_Keywords_5 }}</p>
+        <p class="movie-content">导演：{{ movie.Movie_Director }}</p>
+        <p class="movie-content">主编：{{ movie.Movie_Writers }}</p>
+        <p class="movie-content">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{ movie.Movie_Writers_2 }}</p>
+        <p class="movie-content">主演：{{ movie.Movie_Stars }}</p>
+        <p class="movie-content">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{ movie.Movie_Stars_2 }}</p>
+        <p class="movie-content">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{ movie.Movie_Stars_3 }}</p>
+        <p class="movie-content">电影介绍：<br>{{ movie.Movie_Description }}</p><br>
+        <p class="movie-content">剧情：<br>{{ movie.Movie_Storyline }}</p>
+
+        <hr/>
+
+    {% else %}
+        <h3 class="attention-info"> 电影走丢了！！ 404</h3>
+    {% endif %}
+
+{% endblock %}

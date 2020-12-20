@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}首页{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning" id="notice">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+        <script>
+            window.setTimeout(function () {
+                $("#notice").alert('close');
+            }, 5000);
+        </script>
+    {% endfor %}
+{% endblock %}
+{% block main %}
+    {% if movies|length == 0 %}
+        <div class="movie-group">
+            <p class="attention-info">
+                {% if search_key %}
+                    当前关键词无结果
+                {% else %}
+                    当前无电影
+                {% endif %}
+            </p>
+        </div>
+    {% endif %}
+    {% for movie in movies %}
+        <ui>
+            <div class="avatar-group">
+                <img src="{{ url_for('static',filename='images/icons-movie.jpg') }}" alt="" class="avatar">
+            </div>
+            <div class="movie-group">
+                <p class="movie-title"><a
+                        href="{{ url_for('movie_info.detail', movie_id=movie.id) }}">{{ movie.title }}</a>
+                </p>
+                <p class="movie-content">{{ movie.description }}</p>
+            </div>
+        </ui>
+    {% endfor %}
+    </ul>
+{% endblock %}
